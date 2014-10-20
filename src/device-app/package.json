@@ -1,0 +1,45 @@
+{
+  "name": "device-app",
+  "description": "Web of Things Device App",
+  "scripts": {
+    "test": "mocha --reporter spec --bail"
+  },
+  "version": "0.1.0-1",
+  "engines": {
+    "node": "0.10.x"
+  },
+  "os": [
+    "linux"
+  ],
+  "cpu": [
+    "arm"
+  ],
+  "dependencies": {
+    "log4js": "0.6.8",
+    "request": "2.45",
+    "express": "4.2.0",
+    "errorhandler": "1.1.1",
+    "body-parser": "1.2.0",
+    "method-override": "1.0.0",
+    "serve-favicon": "2.0.0",
+    "morgan": "1.1.0",
+    "optimist": "0.6.0",
+    "async": "0.2.9",
+    "getmac": "1.0.4",
+    "config": "0.4.29",
+    "lodash": "2.4.1",
+    "mkdirp": "0.3.5",
+    "compress-buffer": "1.2.2",
+    "sensorjs": "git+https://github.com/daliworks/sensorjs.git",
+    "sensorjs-futuretek": "git+https://github.com/daliworks/sensorjs-futuretek.git",
+    "retry": "0.6.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.4",
+    "mocha": "*",
+    "chai": "*",
+    "grunt-simple-mocha": "0.2.x",
+    "grunt-shell": "~0.5.0",
+    "grunt-contrib-uglify": "~0.4.0"
+  }
+}

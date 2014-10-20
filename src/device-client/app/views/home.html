@@ -1,0 +1,201 @@
+<div class="panel-body" style="border: 1px solid #cccccc; border-radius: 10px; margin: 10px;">
+  <h2>Sensors List</h2>
+
+  <div class="pull-right">
+    <a ng-click="refreshSensors()"><i class="fa fa-refresh fa-lg"></i>Refresh</a>
+  </div>
+
+  <div class="clearfix"></div>
+
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <th>
+        <td>Sensor ID</td>
+        <td>Type</td>
+        <td>Value</td>
+        <td>Time</td>
+        <td>Status</td>
+        <td>Message</td>
+        <td></td>
+      </th>
+      <tr class="repeated-item" ng-repeat="sensor in $$$.sensorsList">
+        <td>{{ $index }}</td>
+        <td>{{ sensor.id }}</td>
+        <td>{{ sensor.type }}</td>
+        <td>{{ sensor.value | number:2 }}</td>
+        <td>{{ sensor.time | date:'mediumTime' }}</td>
+        <td>{{ sensor.status }}</td>
+        <td>{{ sensor.message }}</td>
+        <td><a ng-click="deleteSensor(sensor.id)">remove</a></td>
+      </tr>
+    </table>
+  </div>
+
+  <h2>Sensors - WebSocket</h2>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <th>
+        <td>Sensor ID</td>
+        <td>Value</td>
+        <td>Time</td>
+        <td>Path</td>
+        <td></td>
+      </th>
+      <tr class="repeated-item" ng-repeat="sensor in $$$.createdSensors">
+        <td>{{ $index }}</td>
+        <td>{{ sensor.id }}</td>
+        <td>{{ sensor.value | number:2 }}</td>
+        <td>{{ sensor.time | date:'mediumTime' }}</td>
+        <td>{{ sensor.path }}</td>
+        <td><a ng-click="deleteSensor(sensor.id)">remove</a></td>
+      </tr>
+    </table>
+  </div>
+
+  <div>
+    <div id="chart-{{ chart.id }}" ng-repeat="chart in $$$.chartData"></div>
+  </div>
+</div>
+
+<div class="panel-body" style="border: 1px solid #cccccc; border-radius: 10px; margin: 10px;">
+  <h2>Create new sensor and Get sensor value</h2>
+
+  <form role="form">
+    <div class="form-group has-success">
+      <label>WOT URL</label>
+
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="url in sensorUrls"
+            ng-click="setSensorUrl(url)"
+            ng-class="{ 'list-group-item-warning': (url === sensorUrl) }">
+          <i class="fa fa-square"></i> {{ url }}
+        </li>
+      </ul>
+
+      <input type="text" class="form-control" ng-model="sensorUrl">
+    </div>
+    <button type="submit" class="btn btn-warning" ng-click="getSensorValue(sensorUrl)">
+      Get Sensor Value
+    </button>
+  </form>
+
+  <div class="panel panel-default col-xs-12 col-sm-6 col-sm-offset-1"
+       style="border: 0;">
+    <div class="panel-body">
+      <ul class="list-group" style="margin-bottom: 0;">
+        <li class="list-group-item">
+          Status: {{ sensorData.status }}
+        </li>
+        <li class="list-group-item">
+          ID: {{ sensorData.id }}
+        </li>
+        <li class="list-group-item">
+          Value: {{ sensorData.value | number:2 }}
+        </li>
+        <li class="list-group-item">
+          Time: {{ sensorData.time | date:'medium' }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="clearfix"></div>
+
+<div class="panel-body" style="border: 1px solid #cccccc; border-radius: 10px; margin: 10px;">
+  <h2>Discover Sensors</h2>
+
+  <form role="form">
+    <div class="form-group has-success">
+      <label>Driver Name</label>
+
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="driver in sensorDrivers"
+            ng-click="setSensorDriver(driver)"
+            ng-class="{ 'list-group-item-warning': (driver === sensorDriverName) }">
+          <i class="fa fa-square"></i> {{ driver }}
+        </li>
+      </ul>
+
+      <input type="text" class="form-control" ng-model="sensorDriverName">
+    </div>
+    <button type="submit" class="btn btn-warning" ng-click="discoverSensors(sensorDriverName)">
+      Discover Sensors
+    </button>
+  </form>
+
+  <div class="panel-body table-responsive">
+    <table class="table">
+      <th>
+        <td>Network</td>
+        <td>Address</td>
+        <td>SensorJS URLs</td>
+      </th>
+      <tr ng-repeat="device in discoveredDevices">
+        <td>{{ $index }}</td>
+        <td>{{ device.network.sensorNetwork }}</td>
+        <td>{{ device.address }}</td>
+        <td>
+          <table class="table">
+            <tr ng-click="setSensorUrl(url)"
+                ng-repeat="url in device.sensorUrls"
+                ng-class="{ 'warning': (url === sensorUrl) }">
+              <td style="border-top: none;">{{ url }}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+
+<div class="panel-body" style="border: 1px solid #cccccc; border-radius: 10px; margin: 10px;">
+  <h2>Set Actuator</h2>
+
+  <form role="form">
+    <div class="form-group has-success">
+      <label>WOT URL</label>
+
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="url in actuatorUrls"
+            ng-click="setActuatorUrl(url)"
+            ng-class="{ 'list-group-item-warning': (url === actuatorUrl) }">
+          <i class="fa fa-square"></i> {{ url }}
+        </li>
+      </ul>
+
+      <input type="text" class="form-control" ng-model="actuatorUrl">
+    </div>
+    <div class="form-group has-success">
+      <label>Command</label>
+      <input type="text" class="form-control" ng-model="command" placeholder="on, off, blink">
+    </div>
+
+    <div class="form-group has-success">
+      <label>Options</label>
+
+      <ul class="list-group">
+        <li class="list-group-item" ng-repeat="option in actuatorOptions"
+            ng-click="setActuatorOption(option)"
+            ng-class="{ 'list-group-item-warning': (option === actuatorOption) }">
+          <i class="fa fa-square"></i> {{ option }}
+        </li>
+      </ul>
+
+      <input type="text" class="form-control" ng-model="actuatorOption">
+    </div>
+
+    <button type="submit" class="btn btn-warning" ng-click="setActuator(actuatorUrl, command, actuatorOption)">Set Actuator</button>
+  </form>
+
+  <div class="panel panel-default col-xs-12 col-sm-6 col-sm-offset-1"
+       style="border: 0;">
+    <div class="panel-body">
+      <ul class="list-group" style="margin-bottom: 0;">
+        <li class="list-group-item">
+          Result: {{ actuatorResult }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
