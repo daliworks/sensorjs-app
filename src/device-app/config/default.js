@@ -10,7 +10,7 @@ module.exports = {
     name: os.hostname(),
     firstDelay: 5000,
     reportInterval: 60000,
-    port: 80,
+    port: 8080,
     logBaseDir: '/var/log/sensorjs/'
   },
   Sensors: {
