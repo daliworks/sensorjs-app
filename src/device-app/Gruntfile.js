@@ -27,24 +27,9 @@ module.exports = function (grunt) {
     },
     jshint: {
       options: {
-        curly: true,
-        eqeqeq: true,
-        immed: true,
-        latedef: true,
-        newcap: true,
-        noarg: true,
-        sub: true,
-        undef: true,
-        boss: true,
-        eqnull: true,
-        node: true,
-        es5: true,
-        indent: 2,
-        onecase: true
+        jshintrc: '.jshintrc'
       },
-      globals: {
-        exports: true
-      }
+      all: ['*.js', 'test/*.js']
     },
     simplemocha: {
       all: {
@@ -54,7 +39,7 @@ module.exports = function (grunt) {
           timeout: 3000,
           ignoreLeaks: false,
           ui: 'bdd',
-          reporter: 'dot'
+          reporter: 'spec'
         }
       }
     },
@@ -71,8 +56,9 @@ module.exports = function (grunt) {
   });
 
   grunt.loadNpmTasks('grunt-simple-mocha');
-  grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   // Default task.
-  grunt.registerTask('default', 'simplemocha lint');
+  grunt.registerTask('default', ['jshint', 'simplemocha']);
+  grunt.registerTask('test', ['simplemocha']);
 };

@@ -16,7 +16,7 @@
   "strict": true,
   "indent": 2,
   "quotmark": "single",
-  "maxlen": 150,
+  "maxlen": 200,
   "esnext": true,
   "evil": true,
   "globalstrict": true,
