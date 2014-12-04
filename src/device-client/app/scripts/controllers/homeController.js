@@ -196,6 +196,8 @@ define(['controllers/controllers', 'socketio', 'c3'],
           $$$.createdSensors[sensorId] = null;
           delete $$$.createdSensors[sensorId];
 
+          _.remove($$$.sensorsList, { id: sensorId });
+
           $$$.chartData[sensorId] = null;
           delete $$$.chartData[sensorId];
         }
